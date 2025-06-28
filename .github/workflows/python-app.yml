@@ -26,4 +26,4 @@ jobs:
 
       - name: Run tests with coverage (≥90 %)
         run: |
-          pytest --cov app --cov-fail-under=90
+          pytest --cov app --cov-config=.coveragerc --cov-fail-under=90

@@ -1,0 +1,11 @@
+[run]
+# Count branches and omit the interactive CLI
+branch = True
+omit =
+    app/calculator_repl.py
+
+[report]
+# Ignore any line tagged with this pragma
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
