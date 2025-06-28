@@ -82,3 +82,24 @@ def test_factory_valid() -> None:
 def test_factory_invalid() -> None:
     with pytest.raises(ValueError):
         ops.OperationFactory.create("nonexistent", 1, 2)
+
+# -------------------------------------------------------------------- #
+# Error-handling: divide / modulo / root by zero                       #
+# -------------------------------------------------------------------- #
+
+from app.operations import OperationFactory
+
+@pytest.mark.parametrize(
+    "op_name, a, b",
+    [
+        ("divide",    5, 0),
+        ("modulus",   5, 0),
+        ("intdivide", 5, 0),
+        ("percent",   5, 0),
+        ("root",      8, 0),
+    ],
+)
+def test_zero_division_family(op_name, a, b) -> None:
+    """Every op that relies on a non-zero denominator should raise."""
+    with pytest.raises(ValueError):
+        OperationFactory.create(op_name, a, b).evaluate()

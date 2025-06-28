@@ -11,7 +11,7 @@ based, slot-optimised, and provides helpers for logging / CSV export.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Sequence, Tuple
 
 
@@ -35,7 +35,7 @@ class CalculationMemento:
     operands: Tuple[float, float]
     result: float
     timestamp: str = field(
-        default_factory=lambda: datetime.utcnow().isoformat(timespec="seconds")
+        default_factory=lambda: datetime.now(timezone.utc).isoformat(timespec="seconds")
     )
 
     # --------------------------------------------------------------------- #

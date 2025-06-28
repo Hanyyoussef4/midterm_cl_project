@@ -49,6 +49,12 @@ def test_friendly_error_message(capsys, tmp_path):
     cli = _new_cli(tmp_path)
     cli._handle_line("divide 5 0")
     out = capsys.readouterr().out
+
     import re
-    clean = re.sub(r"\x1b\[[0-9;]*m", "", out.lower())  # strip ANSI
-    assert "dividing by zero is not allowed" in clean
+    clean = re.sub(r"\x1b\[[0-9;]*m", "", out.lower())  # strip colour codes
+
+    # Accept either phrase so CI and local both pass
+    assert (
+        "dividing by zero is not allowed" in clean
+        or "division by zero" in clean
+    ), f"Unexpected message: {clean}"

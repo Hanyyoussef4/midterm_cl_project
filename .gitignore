@@ -4,7 +4,10 @@ env/
 venv/
 .vscode/
 htmlcov/
-coverage.*
+coverage.*        # htmlcov summary + .coverage.* shards
+.coverage         # SQLite coverage db  ← NEW
 .cache/
 .env
 *.log
+history/          # Auto-save CSV dir    ← NEW
+

@@ -74,12 +74,12 @@ def _err(msg: str) -> None:  # pragma: no cover
 _add      = lambda a, b: a + b
 _sub      = lambda a, b: a - b
 _mul      = lambda a, b: a * b
-_div      = lambda a, b: a / b if b != 0 else _err("division by zero")
+_div      = lambda a, b: a / b if b != 0 else _err("dividing by zero is not allowed")
 _pow      = lambda a, b: a ** b
-_root     = lambda a, n: a ** (1 / n) if n != 0 else _err("zero root")
-_mod      = lambda a, b: a % b if b != 0 else _err("modulo by zero")
-_intdiv   = lambda a, b: a // b if b != 0 else _err("int divide by zero")
-_percent  = lambda a, b: (a / b) * 100 if b != 0 else _err("percent div by zero")
+_root     = lambda a, n: a ** (1 / n) if n != 0 else _err("root index cannot be zero")
+_mod      = lambda a, b: a % b if b != 0 else _err("modulus by zero is not allowe")
+_intdiv   = lambda a, b: a // b if b != 0 else _err("integer-divide by zero is not allowed")
+_percent  = lambda a, b: (a / b) * 100 if b != 0 else _err("percent denominator cannot be zero")
 _absdiff  = lambda a, b: abs(a - b)
 
 

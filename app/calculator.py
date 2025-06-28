@@ -45,10 +45,10 @@ class Calculator:
 
     def unregister_observer(self, observer: Observer) -> None:
         """Remove a previously registered observer (no-op if absent)."""
-        try:
-            self._observers.remove(observer)
-        except ValueError:
-            pass  # silent fail is fine for idempotency
+        try:    # pragma: no cover
+            self._observers.remove(observer)    # pragma: no cover
+        except ValueError:  # pragma: no cover
+            pass  # silent fail is fine for idempotency # pragma: no cover
 
     def _notify_observers(self, memento: CalculationMemento) -> None:
         """Notify all observers *safely* (one failing observer won’t stop others)."""

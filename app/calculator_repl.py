@@ -78,8 +78,17 @@ class CalculatorCLI:
 
     def run(self) -> None:
         """Start the readline loop until user exits."""
-        colorama_init()
-        print(Fore.CYAN + "Enhanced Calculator CLI – type 'help' for commands" + Style.RESET_ALL)
+        colorama_init(autoreset=True)
+        
+        banner = (
+            f"{Fore.CYAN}\n"
+            "╔═════════════════════════════════════════════════╗\n"
+            "║           Welcome to the Enhanced CLI!          ║\n"
+            "╚═════════════════════════════════════════════════╝\n"
+            f"{Style.RESET_ALL}"
+            "Type 'help' to list commands – Ctrl-D or 'exit' to quit.\n"
+        )
+        print(banner)
         try:
             while True:
                 try:
