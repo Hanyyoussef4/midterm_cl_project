@@ -1,0 +1,3 @@
+timestamp,operation,op1,op2,result
+2025-06-28T07:49:58+00:00,add,2,3,5
+2025-06-28T07:49:58+00:00,multiply,4,2,8
