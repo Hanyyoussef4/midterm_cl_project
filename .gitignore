@@ -11,3 +11,4 @@ coverage.*        # htmlcov summary + .coverage.* shards
 *.log
 history/          # Auto-save CSV dir    ← NEW
 
+history/history.csv # or history/ if the whole dir is generated
