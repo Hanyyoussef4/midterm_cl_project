@@ -1,74 +1,79 @@
-# Enhanced Calculator CLI
+# 🚀 Enhanced Calculator CLI
 
-![CI](https://github.com/<your-username>/calculator-cli/actions/workflows/python-app.yml/badge.svg)
-![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+[![CI Status](https://github.com/HanyYoussef4/midterm_cl_project/actions/workflows/python-app.yml/badge.svg)](https://github.com/HanyYoussef4/midterm_cl_project/actions)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://github.com/HanyYoussef4/midterm_cl_project/actions)
 
-> **Midterm Project – Advanced Command‑Line Calculator**
-> Design patterns · Undo/Redo · Observer logging · 100 % test coverage
+> **Midterm Project – Advanced Command-Line Calculator**
+> Demonstrates Python design patterns, REPL development, undo/redo, observer logging, CSV I/O, and 100 % test coverage.
 
 ---
 
-## Table of Contents
+## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Features & Design Patterns](#features--design-patterns)
+2. [Features & Patterns](#features--patterns)
 3. [Folder Structure](#folder-structure)
 4. [Installation](#installation)
-      • [macOS / Linux](#macos--linux) • [Windows (‑PowerShell)](#windows)
-5. [Configuration](#configuration)
+5. [Configuration & Logging](#configuration--logging)
 6. [Using the CLI](#using-the-cli)
-7. [Testing & Coverage](#testing--coverage)
+7. [Testing Instructions](#testing-instructions)
 8. [CI/CD Pipeline](#cicd-pipeline)
 9. [Extending the Calculator](#extending-the-calculator)
 10. [License](#license)
 
 ---
 
-## Project Overview
+## Project Overview
 
-This repository contains a **fully‑featured command‑line calculator** that demonstrates professional Python practices and the design‑pattern requirements of the mid‑term assignment:
+A **fully-featured CLI calculator** that meets midterm requirements while following professional Python practices:
 
-* **Factory Pattern** – dynamically instantiates 11 arithmetic operations.
-* **Memento Pattern** – records every calculation in an undo/redo stack.
-* **Observer Pattern** – pluggable observers for logging and auto‑saving.
-* **REPL** – colourised, user‑friendly loop with `help`, `undo`, `redo`, `save`, `load`, *etc.*
-* **100 % automated test coverage** enforced by GitHub Actions.
-
-> **Learning outcomes met:** Git workflow, CI/CD, design patterns, REPL development, CSV manipulation, unit‑testing, logging, dotenv‑based configuration.
+* **Factory Pattern** for dynamically instantiating 11 arithmetic operations
+* **Memento Pattern** for undo/redo via history stack
+* **Observer Pattern** for logging and auto-saving
+* A colorized **REPL** with commands: `help`, `history`, `undo`, `redo`, `save`, `load`, *etc.*
+* **100 % unit-test coverage** enforced by CI
 
 ---
 
-## Features & Design Patterns
+## Features & Patterns
 
-| Layer        | Key Objects                           | Pattern      | Responsibilities                              |
-| ------------ | ------------------------------------- | ------------ | --------------------------------------------- |
-| *Operations* | `Operation` ABC; `Add`, `Divide`, …   | **Factory**  | Validates arity, executes arithmetic          |
-| *History*    | `History` stack; `CalculationMemento` | **Memento**  | Push / undo / redo calculations               |
-| *Observers*  | `LoggingObserver`, `AutoSaveObserver` | **Observer** | React to each new memento                     |
-| *CLI*        | `CalculatorCLI`                       | –            | Colour banner, command parsing, `save`/`load` |
+| Layer      | Key Classes                           | Pattern      | Responsibility                             |
+| ---------- | ------------------------------------- | ------------ | ------------------------------------------ |
+| Operations | `Operation` ABC, `Add`, …             | **Factory**  | Validate inputs & perform arithmetic       |
+| History    | `History`, `CalculationMemento`       | **Memento**  | Record, undo, redo past calculations       |
+| Observers  | `LoggingObserver`, `AutoSaveObserver` | **Observer** | React to each new calculation (log & save) |
+| CLI        | `CalculatorREPL`, `main.py`           | –            | Parse commands, dispatch ops, handle I/O   |
 
 ---
 
-## Folder Structure
+## Folder Structure
 
 ```
-calculator-cli/
-│  .coveragerc         # coverage rules
-│  README.md           # ← you are here
-│  requirements.txt    # runtime + dev dependencies
-│  .github/workflows/
-│     python-app.yml   # CI pipeline
+midterm_cl_project/
+│  .coveragerc               # Coverage rules
+│  .env.example              # Config template (rename to .env)
+│  README.md                 # ← you are here
+│  requirements.txt          # Dependencies
+│  .github/
+│  └─ workflows/
+│     └─ python-app.yml      # CI pipeline
 │
-├─ app/                # application package
-│  ├─ operations.py          # 11 operations + factory
-│  ├─ history.py             # undo/redo stack
+├─ app/                      # Application package
+│  ├─ operations.py          # 11 ops + Factory
+│  ├─ history.py             # Undo/redo stack
 │  ├─ calculation.py         # Memento dataclass
-│  ├─ observers.py           # observers & ABC
-│  ├─ calculator.py          # façade (history + observers)
-│  ├─ calculator_repl.py     # interactive CLI
+│  ├─ observers.py           # Observer implementations
+│  ├─ calculator.py          # Core façade (history + observers)
+│  ├─ calculator_repl.py     # Interactive REPL logic
 │  └─ __init__.py
 │
-└─ tests/              # 47 pytest cases (100 % cover)
+├─ history/                  # Default CSV auto-save folder
+│  └─ history.csv
+│
+├─ logs/                     # Logging output
+│  └─ calculator.log
+│
+└─ tests/                    # 47 pytest cases (100 % coverage)
    ├─ test_operations.py
    ├─ test_history.py
    ├─ test_observers.py
@@ -80,141 +85,143 @@ calculator-cli/
 
 ## Installation
 
-### macOS / Linux
+### macOS / Linux
 
 ```bash
-# 1. Clone
-$ git clone https://github.com/<your-username>/calculator-cli.git
-$ cd calculator-cli
+# Clone repository
+git clone https://github.com/HanyYoussef4/midterm_cl_project.git
+cd midterm_cl_project
 
-# 2. Create and activate virtual‑env
-$ python3 -m venv venv
-$ source venv/bin/activate
+# Create & activate virtual environment (Python 3.9+)
+python3 -m venv venv
+source venv/bin/activate
 
-# 3. Install dependencies (Python 3.9+)
-(venv)$ pip install -r requirements.txt
-
-# 4. Copy env template (optional)
-(venv)$ cp .env.example .env
-# edit values if you need custom paths or history size
-```
-
-### Windows (`PowerShell`)
-
-```powershell
-# Clone repo
-git clone https://github.com/<your-username>/calculator-cli.git
-cd calculator-cli
-
-# Create venv (Python >= 3.9)
-python -m venv venv
-
-# Activate
-.\venv\Scripts\Activate.ps1
-
-# Install requirements
+# Install dependencies
 pip install -r requirements.txt
 
-# Optional: config file
+# (Optional) Copy and edit config
+cp .env.example .env
+```
+
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/HanyYoussef4/midterm_cl_project.git
+cd midterm_cl_project
+
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+pip install -r requirements.txt
+
 copy .env.example .env
 ```
 
-> **Note**: Colour output on Windows 10+ is enabled automatically via `colorama`.
+---
+
+## Configuration & Logging
+
+All settings live in your `.env` (created from `.env.example`):
+
+```ini
+CALCULATOR_LOG_DIR=logs                     # Where calculator.log is written
+CALCULATOR_HISTORY_DIR=history              # Folder for autosave CSV
+HISTORY_FILE=history/history.csv            # Default file for manual & auto save
+CALCULATOR_MAX_HISTORY_SIZE=100             # Max undo/redo entries
+CALCULATOR_AUTO_SAVE=true                   # Toggle autosave observer
+```
+
+* **Logging:**
+  Logs are written to `logs/calculator.log` via `LoggingObserver`.
+  Level and format in `app/logger.py`.
+
+* **History autosave:**
+  After each calculation, `AutoSaveObserver` writes last N entries (≤ `CALCULATOR_MAX_HISTORY_SIZE`) to `HISTORY_FILE`.
 
 ---
 
-## Configuration
+## Using the CLI
 
-All configuration is dotenv‑driven. Edit `.env` (or keep defaults).
-
-| Variable                      | Default   | Description                           |
-| ----------------------------- | --------- | ------------------------------------- |
-| `CALCULATOR_LOG_DIR`          | `logs`    | Where `calculator.log` is written     |
-| `CALCULATOR_HISTORY_DIR`      | `history` | CSV auto‑save directory               |
-| `CALCULATOR_MAX_HISTORY_SIZE` | `100`     | Max mementos stored (older ones drop) |
-| `CALCULATOR_AUTO_SAVE`        | `true`    | Toggle AutoSave observer              |
-
----
-
-## Using the CLI
+Launch via either:
 
 ```bash
-(venv)$ python -m app.calculator_repl
+python main.py
+# or
+python -m app.calculator_repl
 ```
 
-```
-╔═════════════════════════════════════════════════╗
-║           Welcome to the Enhanced CLI!          ║
-╚═════════════════════════════════════════════════╝
-Type 'help' to list commands – Ctrl‑D or 'exit' to quit.
+You’ll see:
 
+```
+╔════════════════════════════════════════╗
+║       Welcome to the Enhanced CLI!     ║
+╚════════════════════════════════════════╝
+Type 'help' for commands – Ctrl-D or 'exit' to quit.
+
+calc>
+```
+
+Example session:
+
+```text
 calc> add 2 3
 = 5
 calc> power 2 5
 = 32
-calc> divide 5 0
-Error: dividing by zero is not allowed
 calc> history
-  1: … | ADD 2, 3 = 5
-  2: … | POWER 2, 5 = 32
-calc> save results.csv
-History saved to results.csv
-calc> clear
-History cleared.
-calc> load results.csv
-History loaded from results.csv
-calc> undo / redo / exit
+  1: ADD 2,3 = 5
+  2: POWER 2,5 = 32
+
+# Manual save overwrites default file
+calc> save
+Saved 2 entries to history/history.csv
+
+# Load default
+calc> load
+Loaded 2 entries from history/history.csv
+
+# Undo/redo
+calc> undo
+calc> redo
+
+calc> exit
+Goodbye!
 ```
-
-### Command Reference
-
-| Command                                           | Description                 |
-| ------------------------------------------------- | --------------------------- |
-| `add, subtract, multiply, divide, power, root`, … | perform calculation         |
-| `history`                                         | list previous calculations  |
-| `undo / redo`                                     | navigate history            |
-| `clear`                                           | flush history               |
-| `save <file>`                                     | save history → CSV          |
-| `load <file>`                                     | load CSV (replaces history) |
-| `help`                                            | show help                   |
-| `exit / quit`                                     | leave program               |
-
-Logs are written to **`logs/calculator.log`**; CSV snapshots to **`history/history.csv`** (paths configurable).
 
 ---
 
-## Testing & Coverage
+## Testing Instructions
 
 ```bash
-(venv)$ pytest --cov app --cov-config=.coveragerc --cov-report term-missing
+pytest --cov app --cov-config=.coveragerc --cov-report term-missing
 ```
 
-* 47 tests – operations, history, observers, save/load, REPL helpers.
-* **100 % line & branch coverage**.
-* Coverage gate (`--cov-fail-under=90`) enforced in CI.
+* **47 tests** covering all operations, history, observers, CLI, save/load, REPL
+* **100 % line & branch coverage**
+* CI enforces a 90 % coverage gate
 
 ---
 
-## CI/CD Pipeline
+## CI/CD Pipeline
 
-* **GitHub Actions** – `.github/workflows/python-app.yml`
+Defined in `.github/workflows/python-app.yml`:
 
-  * Check‑out → set‑up Python → install deps
-  * `pytest` with coverage; build fails < 90 %
-  * Status & coverage badge shown on top of this README.
+1. Checkout & setup Python (3.9+)
+2. Install dependencies
+3. Run `pytest` with coverage
+4. Fail if coverage < 90 %
+
+Badges at the top update on every push.
 
 ---
 
 ## Extending the Calculator
 
-* **Decorator Pattern** – auto‑generate `help` table from registered operations.
-* **Colour Themes** – extend `CalculatorCLI` with more `colorama` styles.
-* **Packaging** – add `pyproject.toml` and expose CLI via `console_scripts`.
+* **Add operations**: subclass `Operation` and register in the factory
+* **Adjust history**: change `CALCULATOR_MAX_HISTORY_SIZE` in `.env`
+* **Toggle autosave**: set `CALCULATOR_AUTO_SAVE=false`
+* **Package CLI**: add `console_scripts` in `setup.py` or `pyproject.toml`
 
-PRs are welcome – remember to keep coverage ≥ 90 %.
+Contributions welcome—maintain ≥ 90 % coverage.
 
 ---
-
-## License
-
-MIT © 2025 Hany Youssef — feel free to use, learn from, and extend.
